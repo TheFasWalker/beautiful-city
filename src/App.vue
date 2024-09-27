@@ -4,6 +4,7 @@
 
 import ErrorMessage from './components/ui/ErrorMessage.vue';
 import Loader from './components/ui/Loader.vue';
+import PostPreview from './components/PostPreview.vue' 
 
 export default {
 data(){
@@ -16,6 +17,7 @@ data(){
   components: {
     loader:Loader,
     ErrorMessage:ErrorMessage,
+    PostPreview:PostPreview
   },
   mounted(){
     this.getPosts();
@@ -25,7 +27,7 @@ data(){
       try{
         this.loading = true
         this.error = ''
-        const response = await fetch('https://jsonplaceholder.typicode.com/postss123123/')
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts/')
       if (!response.ok) {
           throw new Error('Network response was not ok')
         }
@@ -58,8 +60,15 @@ data(){
       // height: 100%;
       min-height: 250px;
       max-height: 700px;
-      background-color: green;
       position: relative;
+      overflow-y: auto;
+    }
+    .post-wrapper{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      width: 100%;
     }
   </style>
 <template>
@@ -71,6 +80,16 @@ data(){
     <loader v-if="loading"/>
     <error-message v-if="errorTextDescription"
     :errorText="errorTextDescription"/>
+    <div class="post-wrapper">
+      <PostPreview
+        v-for="post of postData"
+        :title="post.title"
+        :description="post.body"
+        :id="post.id"
+      />
+    </div>
+
+
   </div>
 </template>
 
