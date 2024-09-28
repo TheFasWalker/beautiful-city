@@ -13,7 +13,16 @@
           </div>
         </div>
         <div class="postComments">
-          
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+    <PostComment/>
+
         </div>
           {{ id }}
       </div>
@@ -21,6 +30,7 @@
 <script>
 import Loader from './ui/Loader.vue'
 import ErrorMessage from './ui/ErrorMessage.vue'
+import Comment from './Comment.vue'
 
 
 export default{
@@ -28,6 +38,7 @@ export default{
         return {
             loading:false,
             ErrorTextDescription:'',
+
             
         }
 
@@ -42,17 +53,29 @@ export default{
     components: {
     loader: Loader,
     ErrorMessage: ErrorMessage,
+    PostComment:Comment
 
   },
 }
 </script>
 <style lang="scss" scoped>
   .post-wrapper{
-    padding:20px 
+    padding:20px ;
+    display: grid;
+    grid-template-rows: 200px 1fr;
+    height: 100%;
   }
   .post-data{
     display: grid;
     grid-template-columns: 100px 1fr;
     padding-top: 20px;
+  }
+  .postComments{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    border-radius: 10px;
   }
 </style>
