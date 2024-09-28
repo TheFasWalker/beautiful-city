@@ -1,15 +1,15 @@
 <template>
       <loader v-if="loading" />
-      <error-message v-if="ErrorTextDescription" :errorText="errorTextDescription" />
+      <error-message v-if="errorTextDescription" :errorText="errorTextDescription" />
       <div v-if="!id" class="nodata">
         <h1>Выберите пост для получения полной информации о нем</h1>
       </div>
       <div v-if="id" class="post-wrapper">
         <div class="post">
-          <h1>post title</h1>
+          <h1>{{ postData.title }}</h1>
           <div class="post-data">
             <span> postData</span>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea porro voluptatibus dolore? Illum veniam blanditiis incidunt quis sed eum nesciunt ducimus beatae, laborum accusamus magnam ab odit. Consequuntur numquam totam provident vitae quos animi enim dicta quae perferendis pariatur, sunt eligendi facilis ut nobis, sit aspernatur quaerat nihil consequatur in dolorem. Neque aspernatur error commodi ullam recusandae doloribus tempore sequi sunt in quasi ipsam necessitatibus accusamus, quae voluptate. Laborum, sapiente saepe rerum voluptatem repellendus sit autem ex eos aperiam quae molestiae esse facilis at amet nemo corrupti repellat. Fuga facilis tenetur facere fugiat quas quia voluptatum id, possimus dolor odio.</p>
+            <p>{{ postData.body }}</p>
           </div>
         </div>
         <div class="postComments">
@@ -37,19 +37,38 @@ export default{
     data(){
         return {
             loading:false,
-            ErrorTextDescription:'',
+            errorTextDescription:'',
+            postData:{}
 
             
         }
 
     },
     props:{
-        id:String
+        id:Number
+    },
+    methods:{
+      getPostData:async function(){
+        console.log('getpost')
+        try{
+          this.loading = true
+          this.errorTextDescription = ''
+          const response = await fetch (`https://jsonplaceholder.typicode.com/posts/${$id}`)
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
+          this.postData = await response.json()
+          console.log(this.postData)
+        }catch(error){
+          this.errorTextDescription = 'Error fetching post data: ' + error.message
+          this.loading=false
+        }finally {
+        this.loading = false
+        this.errorTextDescription = ''
+      }     
+      }      
     },
 
-    methods:{
-        
-    },
     components: {
     loader: Loader,
     ErrorMessage: ErrorMessage,

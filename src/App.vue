@@ -40,7 +40,7 @@ export default {
         console.log('asdf')
       } finally {
         this.loading = false
-        this.error = ''
+        this.errorTextDescription = ''
       }
 
     }
