@@ -1,5 +1,5 @@
 <template>
-    <div class="post" :data-id="id">
+    <div class="post" >
         <span class="h2">{{ title }}</span>
 
 

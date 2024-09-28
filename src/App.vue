@@ -3,6 +3,7 @@
 import ErrorMessage from './components/ui/ErrorMessage.vue';
 import Loader from './components/ui/Loader.vue';
 import PostPreview from './components/PostPreview.vue'
+import PostDetails from './components/PostDetails.vue'
 
 export default {
   data() {
@@ -10,15 +11,15 @@ export default {
       loading: false,
       postData: [],
       errorTextDescription: '',
-      postDataLoading: false,
-      postErrorTextDescription: '',
-      postData:[]
+      postData:[],
+      activePostId:''
     }
   },
   components: {
     loader: Loader,
     ErrorMessage: ErrorMessage,
-    PostPreview: PostPreview
+    PostPreview: PostPreview,
+    PostDetails:PostDetails
   },
   mounted() {
     this.getPosts();
@@ -84,6 +85,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 </style>
 <template>
@@ -99,15 +101,13 @@ export default {
       <PostPreview
         v-for="post of postData"
         :title="post.title"
-        :id="post.id"
+        :key="post.id"
+        @click="activePostId = post.id"
       />
     </div>
-    <div class="content">
-      <loader v-if="postDataLoading" />
-      <error-message v-if="postErrorTextDescription" :errorText="errorTextDescription" />
-      <div v-if="!postData" class="nodata">
-        <h1>Выберите пост для получения полной информации о нем</h1>
-      </div>
+    <div class="content" >
+
+      <PostDetails :id="activePostId"/>
     </div>
 
 
