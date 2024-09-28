@@ -13,15 +13,12 @@
           </div>
         </div>
         <div class="postComments">
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
-    <PostComment/>
+          <PostComment
+          v-for="comment of commentsData"
+          :username="comment.name"
+          :body="comment.body"
+          :email="comment.email"/>
+
 
         </div>
           {{ id }}
@@ -30,17 +27,20 @@
 <script>
 import Loader from './ui/Loader.vue'
 import ErrorMessage from './ui/ErrorMessage.vue'
-import Comment from './Comment.vue'
+import Comment from './PostComment.vue'
 
 
 export default{
     data(){
         return {
             loading:false,
-            errorTextDescription:'',
-            postData:{}
+          errorTextDescription: '',
+          loadingConmments: false,
+            errorCommentsLoading:'',
+          postData: {},
+            commentsData:[]
 
-            
+
         }
 
     },
@@ -72,18 +72,36 @@ export default{
         }finally {
         this.loading = false
         this.errorTextDescription = ''
-      }     
-      }      
-    },
-    watch: {
-    id: {
-      immediate: true, 
-      handler(newId) {
-        if (newId) {
-          this.getPostData();
+        }
+      },
+      getPostComments: async function() {
+        try {
+          this.loadingConmments = true
+          this.errorCommentsLoading = ''
+            const response = await fetch (`https://jsonplaceholder.typicode.com/posts/${this.id}/comments`)
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+            this.commentsData = await response.json()
+        } catch (error) {
+          this.loadingConmments = false
+            this.errerrorCommentsLoading = 'Error fetching post comments data: ' + error.message
+        } finally {
+          this.loadingConmments = false
+          this.errorCommentsLoading = ''
         }
       }
-    }
+    },
+    watch: {
+      id: {
+        immediate: true,
+        handler(newId) {
+          if (newId) {
+            this.getPostData();
+            this.getPostComments()
+          }
+        }
+      }
   },
 
     components: {
