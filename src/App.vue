@@ -4,6 +4,8 @@ import ErrorMessage from './components/ui/ErrorMessage.vue';
 import Loader from './components/ui/Loader.vue';
 import PostPreview from './components/PostPreview.vue'
 import PostDetails from './components/PostDetails.vue'
+import SearchInput from './components/ui/SearchInput.vue';
+
 
 export default {
   data() {
@@ -19,7 +21,8 @@ export default {
     loader: Loader,
     ErrorMessage: ErrorMessage,
     PostPreview: PostPreview,
-    PostDetails:PostDetails
+    PostDetails: PostDetails,
+    SearchInput:SearchInput
   },
   mounted() {
     this.getPosts();
@@ -74,8 +77,8 @@ export default {
   position: relative;
 }
 .sidebar{
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 50px 1fr;
   gap: 10px;
 }
 .nodata{
@@ -87,6 +90,13 @@ export default {
     justify-content: center;
     position: relative;
 }
+.sidebar-results{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 100%;
+  overflow-y: scroll;
+}
 </style>
 <template>
 
@@ -96,14 +106,19 @@ export default {
   </div>
   <div class="main">
     <div class="sidebar">
+
+      <SearchInput/>
       <loader v-if="loading" />
       <error-message v-if="errorTextDescription" :errorText="errorTextDescription" />
-      <PostPreview
+      <div class="sidebar-results">
+        <PostPreview
         v-for="post of postData"
         :title="post.title"
         :key="post.id"
         @click="activePostId = post.id"
       />
+      </div>
+
     </div>
     <div class="content" >
 
