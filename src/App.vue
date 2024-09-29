@@ -36,10 +36,9 @@ export default {
           throw new Error('Network response was not ok')
         }
         this.postData = await response.json()
-        console.log(this.postData)
+
       } catch (error) {
         this.errorTextDescription = 'Error fetching posts: ' + error.message
-        console.log('asdf')
       } finally {
         this.loading = false
         this.errorTextDescription = ''
@@ -48,16 +47,16 @@ export default {
     },
     onEndInput: async function () {
       let searchData = event.target.value
-      console.log(searchData)
+
 
       this.loading = true
       this.error = false
       try {
-        console.log
+
         const response = await fetch(
           `https://jsonplaceholder.typicode.com/posts?title_like=${searchData}`
         )
-        console.log(response)
+
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }

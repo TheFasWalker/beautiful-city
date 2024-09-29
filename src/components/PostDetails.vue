@@ -49,23 +49,15 @@ export default{
     },
     methods:{
       getPostData:async function(){
-        console.log('Fetching post data for ID:', this.id);
         try{
-          console.log('try')
           this.loading = true
-
           this.errorTextDescription = ''
-          console.log(`https://jsonplaceholder.typicode.com/posts/${this.id}`)
           const response = await fetch (`https://jsonplaceholder.typicode.com/posts/${this.id}`)
-
           if (!response.ok) {
-
             throw new Error('Network response was not ok')
-
           }
           this.postData = await response.json()
 
-          console.log(this.postData)
         }catch(error){
           this.errorTextDescription = 'Error fetching post data: ' + error.message
           this.loading=false

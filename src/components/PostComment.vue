@@ -59,7 +59,6 @@ export default {
     },
     methods: {
         getUserData: async function () {
-            console.log(this.email)
 
             try {
                 this.userDataLoading = true
@@ -72,8 +71,7 @@ export default {
                 }
 
                 this.userData = await response.json()
-                console.log(this.userData[0].name)
-                    console.log('here-last')
+
             } catch (error) {
                 this.errorMessage = 'Error fetching post data: ' + error.message
                 this.userDataLoading= false
