@@ -6,7 +6,7 @@ export default {
 
   data() {
     return {
-      state:'second'
+      state:''
     }
 
     },
@@ -30,6 +30,22 @@ export default {
   </div>
 <firstComponent v-if="this.state == 'first'"/>
 <secondComponent v-if="this.state == 'second'" />
+<div class="main-item" v-if="!this.state">
+<h1>Тестовое задание Красивый город</h1>
+<br>
+<p>К сожалению я несмог выполнить тестовое задание  как таковое(то что указано в самом ТЗ). - Само ТЗ есть в файле readme.md<br>
+  Сделал максимальную реализацию работы с элементами. <br>
+  В блоке работы с постами можно произвести поиск по "названию поста"<br>
+  Редактирование данных не делал , так как я еще не затрагивал тему стейтменеджеров, а по хорошему это нужно делать с их помощью<br>
+  Тему роутинга я тоже не затронул ибо во vue с этим пока не работал <br>
+  P.S.  на данный момент работаю с vue только в роли человека, который делает мелкие правки по контенту и по стилям...
+<br>
+  У меня уже запланировано углубленное изучение vue3 ( начало 31.10)
+  <br>
+  <br>
+  <h1>Спасибо за потраченное время!</h1>
+</p>
+</div>
 </template>
 
 <style lang="scss" scoped>
@@ -45,5 +61,13 @@ export default {
     padding: 10px;
     cursor: pointer;
   }
+}
+.main-item{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+
 }
 </style>
