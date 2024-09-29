@@ -13,7 +13,7 @@
             <span>userCompany: </span>
             {{ userData.company.name }}
         </div>
-        <button @click="showData = !showData">Показать дополнительные данные</button>
+        <button @click="toggleHiddenData">{{ buttonText }}</button>
         <div class="user-hidden" v-show="showData">
             <div class="user-elem">
                 <div class="user-item">
@@ -52,11 +52,24 @@
 export default {
     data() {
         return {
-            showData:false
+            showData: false,
+            hiddenDataState: false,
+            // buttonText:'Показать дополнительные данные'
+        }
+    },
+    computed: {
+        buttonText() {
+            return this.showData ?'Скрыть дополнительные данные':'Показать дополнительные данные'
         }
     },
     props: {
         userData:Array
+    },
+    methods: {
+        toggleHiddenData: function () {
+            this.showData = !this.showData
+            this.buttonText= this.buttonText === 'Показать дополнительные данные' ? 'Показать дополнительные данные' : 'Скрыть дополнительные данные'
+        }
     }
 }
 </script>
