@@ -1,5 +1,5 @@
 <template>
-    <div class="post" >
+    <div  :class="[activity ? 'active' : '', 'post']">
         <span class="h2">{{ title }}</span>
 
 
@@ -8,7 +8,8 @@
 <script>
 export default{
     props: {
-        title:String,
+        title: String,
+        activity:Boolean
     }
 }
 </script>
@@ -22,6 +23,11 @@ export default{
             background: gray;
             box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
             color: #FFFFFF;
+        }
+        &.active{
+            background-color: green;
+            color: #FFFFFF;
+            font-weight: 600;
         }
     }
 

@@ -140,6 +140,7 @@ export default {
         v-for="post of postData"
         :title="post.title"
         :key="post.id"
+        :activity="post.id == activePostId"
         @click="activePostId = post.id"
       />
       </div>
