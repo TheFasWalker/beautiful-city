@@ -13,7 +13,6 @@ export default {
       loading: false,
       postData: [],
       errorTextDescription: '',
-      postData:[],
       activePostId:''
     }
   },
@@ -46,7 +45,31 @@ export default {
         this.errorTextDescription = ''
       }
 
-    }
+    },
+    onEndInput: async function () {
+      let searchData = event.target.value
+      console.log(searchData)
+
+      this.loading = true
+      this.error = false
+      try {
+        console.log
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/posts?title_like=${searchData}`
+        )
+        console.log(response)
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        this.postData = await response.json()
+      } catch (error) {
+        this.error = 'Error fetching users: ' + error.message
+        this.error = true
+      } finally {
+        this.loading = false
+        this.error = true
+      }
+    },
   }
 }
   ;
@@ -65,7 +88,6 @@ export default {
   width: 100%;
   min-height: 250px;
   position: relative;
-
   display: grid;
   grid-template-columns: 400px 1fr;
 }
@@ -96,6 +118,7 @@ export default {
   gap: 5px;
   height: 100%;
   overflow-y: scroll;
+  position: relative;
 }
 </style>
 <template>
@@ -107,10 +130,12 @@ export default {
   <div class="main">
     <div class="sidebar">
 
-      <SearchInput/>
-      <loader v-if="loading" />
-      <error-message v-if="errorTextDescription" :errorText="errorTextDescription" />
+      <SearchInput :onEndInput="onEndInput"/>
+
       <div class="sidebar-results">
+        <loader v-if="loading" />
+        <error-message v-if="errorTextDescription" :errorText="errorTextDescription" />
+        <span v-if="!postData.length">соответствий нет</span>
         <PostPreview
         v-for="post of postData"
         :title="post.title"
