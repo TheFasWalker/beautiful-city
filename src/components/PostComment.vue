@@ -7,31 +7,49 @@
 
         <p>{{ body }}</p>
         <div class="userData" v-if="popupState">
-            <button @click="closeUserPopup">close</button>
-            <div class="userData-item">
-                <span>username:</span>
-                <span>UserName</span>
+            <div class="userData-wrapper" >
+                <loader v-if="userDataLoading"/>
+                <errorMessages v-if="errorMessage" :errorText="errorMessage"/>
+                <button @click="closeUserPopup">close</button>
+                <div class="userData-found" v-if="this.userData[0]">
+                    <div class="userData-item" >
+                        <span>username:</span>
+                        <span>{{ this.userData[0].name }}</span>
+                    </div>
+                    <div class="userData-item">
+                        <span>useremail:</span>
+                        <span>{{ this.userData[0].email }}</span>
+                    </div>
+                    <div class="userData-item">
+                        <span>companyName:</span>
+                        <span v-if="this.userData[0].company.name">{{ this.userData[0].company.name }}</span>
+                    </div>
+                    <div class="userData-item">
+                        <span>UserWebsite:</span>
+                        <span >{{ this.userData[0].website }}</span>
+                    </div>
+                </div>
+                <div class="userData-notfound">
+                    данные пользователя не найдены
+                </div>
+
+
             </div>
-            <div class="userData-item">
-                <span>useremail:</span>
-                <span>useremail@email.email</span>
-            </div>
-            <div class="userData-item">
-                <span>companyName:</span>
-                <span>useremail@email.email</span>
-            </div>
-            <div class="userData-item">
-                <span>UserWebsite:</span>
-                <span>useremail@email.email</span>
-            </div>
+
         </div>
     </div>
 </template>
 <script>
+import Loader from './ui/Loader.vue';
+import ErrorMessage from './ui/ErrorMessage.vue';
+
 export default {
     data() {
         return {
-            popupState:false
+            popupState: false,
+            userDataLoading: false,
+            errorMessage: '',
+            userData: {}
     }
 },
     props: {
@@ -40,14 +58,41 @@ export default {
         email: String,
     },
     methods: {
-        getUserData: function () {
+        getUserData: async function () {
             console.log(this.email)
+
+            try {
+                this.userDataLoading = true
+                this.errorMessage = ''
+
+                const response = await fetch(`https://jsonplaceholder.typicode.com/users?email=${this.email}`)
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+
+                this.userData = await response.json()
+                console.log(this.userData[0].name)
+                    console.log('here-last')
+            } catch (error) {
+                this.errorMessage = 'Error fetching post data: ' + error.message
+                this.userDataLoading= false
+            } finally {
+                this.userDataLoading = false
+                 this.errorMessage = ''
+            }
             this.popupState = !this.popupState
 
         },
         closeUserPopup: function () {
             this.popupState = !this.popupState
+
+
         }
+    },
+    components: {
+        loader: Loader,
+        errorMessage:ErrorMessage
     }
 }
 </script>
@@ -66,6 +111,9 @@ export default {
         display: flex ;
         flex-direction: row;
         justify-content: space-between;
+    }
+    .userData-wrapper{
+        position: relative;
     }
     .userData{
         position: absolute;
